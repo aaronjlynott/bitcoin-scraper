@@ -1,0 +1,26 @@
+#wow - this is going to take some brain power...settle in
+import json
+import sys
+import requests
+
+if len(sys.argv) ==2:
+    try:
+        value = float(sys.argv[1])
+    except:
+        print('Input is not a number')
+        sys.exit(1)
+else:
+    print('Enter the number of bitcoins you want to price:')
+    sys.exit(1)
+
+#want to find the price of a bitcoin and compare it to value
+try:
+    get_json = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+    response = get_json.json()
+    bitcoin_rate = response['bpi']['USD']['rate_float']
+    total_value = value * bitcoin_rate
+    print(f'${total_value:,.4f}')
+
+except requests.RequestException:
+    print('Ambiguous handling exception')
+    sys.exit()
